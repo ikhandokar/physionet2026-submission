@@ -155,6 +155,59 @@ python run_model.py \
 
 ---
 
+
+## ️ Training the Model
+
+>  Training is optional for evaluation. Pretrained checkpoints can be used for inference.
+
+### 1. Ensure Dataset is Prepared
+
+```
+PATH_TO_DATASET/
+├── training_set/
+│   ├── algorithmic_annotations/
+│   ├── human_annotations/
+│   ├── physiological_data/
+│   └── demographics.csv
+```
+
+### 2. Start Training
+
+```bash
+python train_model.py --config configs/default.yaml
+```
+
+### 3. Checkpoints
+
+```
+checkpoints/
+├── best_model.pt
+├── latest_checkpoint.pt
+```
+
+### 4. Resume Training
+
+```bash
+python train_model.py \
+    --config configs/default.yaml \
+    --resume checkpoints/latest_checkpoint.pt
+```
+
+### 5. Training Logs
+
+```
+logs/
+├── training_curves.png
+├── metrics.json
+```
+
+### 6. Notes
+
+- GPU is recommended for training  
+- Hyperparameters are configurable in YAML  
+
+---
+
 ##  Output
 
 Generated outputs:
