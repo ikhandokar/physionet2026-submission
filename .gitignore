@@ -1,0 +1,21 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+logs/
+*.png
+*.json
+
+# keep checkpoints out by default; add best_model.pt manually if needed
+checkpoints/
+!checkpoints/.gitkeep
+
+# never commit dataset or EDF files
+Physionet-2026/
+*.edf
+
+# OS/editor junk
+.DS_Store
+Thumbs.db

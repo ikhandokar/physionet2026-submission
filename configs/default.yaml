@@ -1,0 +1,48 @@
+seed: 42
+device: "cuda"
+num_workers: 0
+
+paths:
+  data_root: "PATH_TO_DATASET"
+  output_root: "."
+  checkpoints_dir: "./checkpoints"
+  logs_dir: "./logs"
+  predictions_dir: "./logs/predictions"
+
+data:
+  training_split: "training_set"
+  inference_split: "supplementary_set"
+  training_sites: ["S0001", "I0002"]
+  validation_sites: ["I0006"]
+  full_training_sites: ["S0001", "I0002", "I0006"]
+  use_annotations: true
+  use_metadata: true
+  normalize_per_channel: true
+  target_sample_rate: 128
+  window_seconds: 120
+  annotation_feature_dim: 20
+  metadata_feature_dim: 12
+  random_crop_train: false
+
+train:
+  batch_size: 4
+  epochs: 3
+  lr: 0.001
+  weight_decay: 0.0001
+  early_stopping_patience: 3
+  train_on_all_sites: false
+  save_every_epoch: true
+  resume: true
+  mixed_precision: true
+  max_grad_norm: 5.0
+
+model:
+  signal_embed_dim: 64
+  ann_embed_dim: 32
+  meta_embed_dim: 16
+  hidden_dim: 128
+  dropout: 0.2
+
+eval:
+  batch_size: 4
+  preview_predictions: 10

@@ -1,0 +1,11 @@
+numpy==1.26.4
+scipy==1.12.0
+pandas==2.2.2
+scikit-learn==1.4.2
+pyyaml==6.0.1
+tqdm==4.66.4
+joblib==1.4.2
+pyedflib==0.1.38
+mne==1.7.0
+wfdb==4.1.2
+matplotlib==3.8.4
