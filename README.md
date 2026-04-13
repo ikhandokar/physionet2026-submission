@@ -1,38 +1,46 @@
-
-
-```markdown
-# PhysioNet 2026 Challenge Submission
-
-A deep learning pipeline for future cognitive impairment prediction from polysomnography (PSG) data for the PhysioNet 2026 Challenge.
+#  PhysioNet 2026 Challenge Submission  
+**Future Cognitive Impairment Prediction from PSG Data**
 
 ---
 
-## Project Summary
+##  Overview
 
-This repository provides a modular and reproducible pipeline for processing PSG (EDF) data and performing risk prediction.
+This repository contains our submission for the **PhysioNet 2026 Challenge**, focusing on predicting future cognitive impairment using **polysomnography (PSG) data**.
 
-The model integrates:
+The pipeline is designed to be:
 
-- Physiological signals (EDF files)
-- Demographic metadata
-- Optional CAISR annotation features
-- Multi-modal fusion with missing-modality robustness
+- Modular and extensible  
+- Robust to missing modalities  
+- Reproducible with minimal setup  
+- Efficient for inference on unseen data  
 
 ---
 
-## Repository Structure
+##  Method Summary
+
+Our approach integrates multiple data sources:
+
+- Physiological signals (EDF files)  
+- Demographic features  
+- Optional annotation features (CAISR)  
+- Multi-modal fusion architecture  
+
+The model is designed to handle real-world missing data scenarios using adaptive fusion strategies.
+
+---
+
+##  Repository Structure
 
 ```
-
-physionet2026_v1/
+physionet2026/
 ├── configs/
 │   └── default.yaml
 ├── data/
-│   ├── annotations.py
-│   ├── channel_map.py
 │   ├── dataset.py
 │   ├── edf_loader.py
-│   └── features.py
+│   ├── features.py
+│   ├── annotations.py
+│   └── channel_map.py
 ├── models/
 │   ├── encoders.py
 │   ├── fusion.py
@@ -44,22 +52,19 @@ physionet2026_v1/
 │   └── seed.py
 ├── checkpoints/
 ├── logs/
-├── requirements.txt
-├── train_model.py
 ├── run_model.py
 ├── team_code.py
-└── helper_code.py
-
+├── helper_code.py
+└── requirements.txt
 ```
 
 ---
 
-## Expected Dataset Structure
+##  Expected Dataset Structure
 
-Dataset is NOT included.
+>  Dataset is **NOT included** in this repository.
 
 ```
-
 PATH_TO_DATASET/
 ├── training_set/
 │   ├── algorithmic_annotations/
@@ -67,117 +72,116 @@ PATH_TO_DATASET/
 │   ├── physiological_data/
 │   └── demographics.csv
 └── supplementary_set/
-├── physiological_data/
-└── demographics.csv
-
+    ├── physiological_data/
+    └── demographics.csv
 ```
 
 Example file:
 ```
-
 sub-S0001111197789_ses-2.edf
-
-````
+```
 
 ---
 
-## Environment Setup (Windows)
+##  Environment Setup
 
-Create virtual environment:
+**Tested on:** Python 3.10 (Windows/Linux), CUDA 12.1
 
-```bat
+### 1. Create Virtual Environment
+
+```bash
 python -m venv .venv
 .venv\Scripts\activate
-python -m pip install --upgrade pip setuptools wheel
-````
+```
 
-Install dependencies:
+### 2. Install Dependencies
 
-```bat
+```bash
+pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
 ```
 
-Install PyTorch (CUDA 12.1):
+### 3. Install PyTorch
 
-```bat
+Install according to your system:
+
+**GPU (CUDA 12.1):**
+```bash
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 ```
 
-Verify installation:
+**CPU only:**
+```bash
+pip install torch torchvision torchaudio
+```
 
-```bat
-python -c "import numpy, torch, pandas, sklearn, yaml; print('Environment OK')"
+For other configurations, see: https://pytorch.org/get-started/locally/
+
+### 4. Verify Installation
+
+```bash
+python -c "import torch, numpy, pandas, sklearn, yaml; print('Environment OK')"
 ```
 
 ---
 
-## Dataset Path Setup
+##  Configuration
 
-Open:
+Update dataset path in:
 
 ```
 configs/default.yaml
-```
-
-Update:
-
-```yaml
-paths:
-  data_root: "PATH_TO_DATASET"
 ```
 
 Example:
 
 ```yaml
 paths:
-  data_root: "C:/Users/YourName/Desktop/Physionet-2026/archive"
+  data_root: "C:/path/to/PhysioNet/data"
 ```
 
 ---
 
-## Run the Model
+##  Running Inference
 
-Run pipeline:
+Run the model on unseen data:
 
-```bat
-python train_model.py --config configs/default.yaml
-```
-
-Run inference:
-
-```bat
-python run_model.py --config configs/default.yaml --checkpoint checkpoints/best_model.pt --split supplementary_set
+```bash
+python run_model.py \
+    --config configs/default.yaml \
+    --checkpoint checkpoints/best_model.pt \
+    --split supplementary_set
 ```
 
 ---
 
-## Outputs
+##  Output
 
 Generated outputs:
 
 ```
-checkpoints/best_model.pt
-checkpoints/latest_checkpoint.pt
-logs/training_curves.png
-logs/val_preview_predictions.json
-logs/predictions/*.csv
+logs/
+├── predictions/
+│   └── *.csv
+├── val_preview_predictions.json
+└── training_curves.png
 ```
 
 ---
 
-## Notes
+##  Important Notes
 
-* Labels exist ONLY in training set
-* Supplementary set → labels will be NULL (expected)
-* Model supports dynamic missing modalities
-* Configurable via YAML file
+- Labels exist only in the training set  
+- Supplementary set is used for inference  
+- Missing modalities are handled dynamically  
+- All behavior is controlled via YAML configuration  
 
 ---
 
-## Quick Start
+##  Quick Start
 
-```
-git clone https://github.com/iftakharAK/physionet2026-submission.git
+```bash
+git clone https://github.com/iftykhandokar/physionet2026-submission.git
 cd physionet2026-submission
 
 python -m venv .venv
@@ -186,16 +190,17 @@ python -m venv .venv
 pip install -r requirements.txt
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 
-python train_model.py --config configs/default.yaml
+python run_model.py --config configs/default.yaml --checkpoint checkpoints/best_model.pt
 ```
 
 ---
 
-## Future Improvements
+##  Contact
 
-* Domain generalization
-* Better signal augmentation
-* Improved cross-site robustness
-* Calibration tuning
+For questions, please open an issue in this repository.
 
+---
 
+##  License
+
+This project is provided for research and competition purposes only.
